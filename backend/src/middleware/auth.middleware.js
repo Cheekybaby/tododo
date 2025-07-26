@@ -12,14 +12,13 @@ const protectRoute = async (req, res, next) => {
         }
 
         const decoded = jwt.verify(token, process.env.SECRET_JWT);
-
         if (!decoded){
             res.status(401).json({
                 message: "Unauthorized - Invalid token",
             });
         }
 
-        const user = await User.findById(decoded.userId).select("-password");
+        const user = await User.findById(decoded.id);
 
         if (!user){
             res.status(404).json({
